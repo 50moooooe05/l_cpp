@@ -80,17 +80,16 @@ class Rectangle : public Figure {
 
 class Circle : public Figure{
     public:
-        double x1,y1,x2,y2;
+        double x1,y,x2;
 
-        Circle(double _x1,double _y1,double _x2,double _y2){
+        Circle(double _x1,double _y,double _x2){
             x1 = _x1;
-            y1 = _y1;
+            y = _y;
             x2 = _x2;
-            y2 = _y2;
         };
 
     double area() const{
-        return (x2 - x1) * (y2 - y1) * M_PI;
+        return  (x2+x1)*M_PI;
     };
 };
 
@@ -110,15 +109,16 @@ class Triangle : public Figure{
     };
 };
 
+void printArea(const Figure& fig){
+    printf("%f\n",fig.area());
+}
+
 int main(){
-    Rectangle rect = Rectangle(1,1,2,2);
-    Circle crl = Circle(1,1,2,2);
-    Triangle trg = Triangle(1,1,2,2);
-    // printf("%f\n",trg.area());
+    Rectangle rect(1,1,2,2);
+    Circle circle(1,1,1);
+    Triangle trg(1,1,2,2);
+    
+    printArea(rect);
+    printArea(circle);
+    printArea(trg);
 }
-
-void printArea(const Rectangle& rect){
-    printf("%f\n",rect.area());
-}
-
-//ポリモーフィズムから
