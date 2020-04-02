@@ -1,4 +1,6 @@
+#define _USE_MATH_DEFINES
 #include <iostream>
+#include <cmath>
 
 /*
 int main(){
@@ -57,26 +59,66 @@ int main(){
 //継承
 class Figure{
     public:
-        virtual double area() = 0; //具体的な定義を書くことはできない
+        virtual double area() const = 0; //具体的な定義を書くことはできない
 };
 
 class Rectangle : public Figure {
     public:
         double x1, y1, x2, y2;
 
-        Rectangle(double _x1, _y1, _x2, _y2) {
+        Rectangle(double _x1,double _y1,double _x2,double _y2) {
             x1 = _x1;
             y1 = _y1;
             x2 = _x2;
             y2 = _y2;
         };
     
-    double area(){
+    double area() const{
         return (x2 - x1) * (y2 - y1);
+    };
+};
+
+class Circle : public Figure{
+    public:
+        double x1,y1,x2,y2;
+
+        Circle(double _x1,double _y1,double _x2,double _y2){
+            x1 = _x1;
+            y1 = _y1;
+            x2 = _x2;
+            y2 = _y2;
+        };
+
+    double area() const{
+        return (x2 - x1) * (y2 - y1) * M_PI;
+    };
+};
+
+class Triangle : public Figure{
+    public:
+        double x1,y1,x2,y2;
+
+        Triangle(double _x1,double _y1,double _x2,double _y2){
+            x1 = _x1;
+            y1 = _y1;
+            x2 = _x2;
+            y2 = _y2;
+        };
+
+    double area() const{
+        return (x1 - x2) * (y1 - y2) / 2;
     };
 };
 
 int main(){
     Rectangle rect = Rectangle(1,1,2,2);
+    Circle crl = Circle(1,1,2,2);
+    Triangle trg = Triangle(1,1,2,2);
+    // printf("%f\n",trg.area());
+}
+
+void printArea(const Rectangle& rect){
     printf("%f\n",rect.area());
 }
+
+//ポリモーフィズムから
