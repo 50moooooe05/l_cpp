@@ -63,7 +63,41 @@ void printArea(const Figure& fig) {
   printf("%f\n", fig.area());
 }
 
+//二次元ベクトルを表すクラス
+class Vec2 {
+    public:
+        double x;
+        double y;
+
+    //コンストラクタ
+    Vec2(double _x,double _y){
+        x = _x;
+        y = _y;
+    };
+
+    //出力
+    void print() const{
+        printf("(%f,%f)",x,y);
+    };
+};
+
+//演算子+をオーバーロード
+Vec2 operator+(const Vec2& left,const Vec2& right) {
+    return Vec2(left.x + right.x, left.y + right.y);
+}
+
+//演算子-をオーバーロード
+Vec2 operator-(const Vec2& left,const Vec2& right) {
+    return Vec2(left.x - right.x, left.y - right.y);
+}
+
+//演算子*をオーバーロード
+Vec2 *operator(const Vec2& left,const Vec2& right) {
+    return Vec2(left.x * right.x, left.y * right.y);
+}
+
 int main() {
+    /*
     Rectangle rect(1,1,2,2);
     Circle circle(1,1,1);
     
@@ -71,4 +105,13 @@ int main() {
     printArea(circle);
 
     return 0;
+    */
+
+    Vec2 v1(1,1);
+    Vec2 v2(2,2);
+
+    Vec3 v3 = v1 + v2;
+    v3.print();
+
+    return 0; 
 }
