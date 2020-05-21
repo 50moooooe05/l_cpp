@@ -5,7 +5,7 @@
 //抽象クラス
 class Figure {
     public:
-        virtual double area() = 0;
+        virtual double area() const = 0;
 };
 
 //矩形
@@ -20,7 +20,7 @@ class Rectangle : public Figure {
             y2 = _y2;
         };
 
-        double area(){
+        double area() const{
             return (x2-x1)*(y2-y1);
         };
 };
@@ -28,17 +28,16 @@ class Rectangle : public Figure {
 //円クラス
 class Circle : public Figure {
     public:
-        double x1,y1,x2,y2;
+        double x1,y1,x2;
 
-    Circle(double _x1,double _y1,double _x2,double _y2){
+    Circle(double _x1,double _y1,double _x2){
         x1 = _x1;
         y1 = _y1;
         x2 = _x2;
-        y2 = _y2;
     };
 
-    double area(){
-        int r = sqrt(std::pow(x1-x2,2)+std::pow(y1-y2,2));
+    double area() const{
+        double r = sqrt(x2 + x1);
         return (r * r * M_PI);
     };
 }; 
@@ -55,16 +54,21 @@ class Triangle : public Figure {
             y2 = _y2;
         };
 
-        double area(){
+        double area() const{
             return (x2-x1)*(y2-y1)/2;
         };
 };
 
+void printArea(const Figure& fig) {
+  printf("%f\n", fig.area());
+}
+
 int main() {
-    Rectangle rect = Rectangle(1,1,2,2);
-    Circle circle = Circle(1,1,2,2);
-    Triangle tri = Triangle(1,1,2,2);
-    // printf("%f\n",rect.area());
-    // printf("%f\n",circle.area());
-    printf("%f\n",tri.area());
+    Rectangle rect(1,1,2,2);
+    Circle circle(1,1,1);
+    
+    printArea(rect);
+    printArea(circle);
+
+    return 0;
 }
