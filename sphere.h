@@ -4,7 +4,7 @@
 #include "ray.h"
 #include "hit.h"
 
-lass Sphere{
+class Sphere{
     public:
         Vec3 center; //中心座標
         double radius; //半径
@@ -12,7 +12,7 @@ lass Sphere{
     Sphere(const Vec3& center, double radius): center(center), radius(radius){};
 
     //Rayとの衝突計算を行うメンバ関数
-    bool intersect(const Ray& ray) const {
+    bool intersect(const Ray& ray,Hit& hit) const {
         double d_norm = ray.direction.length();
         double oc_norm = (ray.origin - center).length();
 
