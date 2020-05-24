@@ -121,15 +121,13 @@ int main() {
     return 0;
     */
 
-    /*
     Vec2 v1(1,1);
     Vec2 v2(2,2);
 
-    Vec3 v3 = v1 + v2;
+    Vec2 v3 = v1 * v2;
     v3.print();
 
-    return 0; 
-    */
+    return 0;
 
     //std::vector
     /*
@@ -148,13 +146,14 @@ int main() {
     */
 
     //スマートポインタ
+    /*
     std::shared_ptr<Person> p = std::make_shared<Person>(Person(20,"Watson"));
     printf("%d\n",p->age);
     return 0;
+    */
 
     /*ターミナルでやるときは
     clang++ -std=c++11 ray1.cpp
     C++11で使われ始めたかららしい
-
-    
+    */
 }
