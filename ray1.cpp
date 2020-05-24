@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <cstdio>
+#include <vector>
 
 //抽象クラス
 class Figure {
@@ -92,7 +93,7 @@ Vec2 operator-(const Vec2& left,const Vec2& right) {
 }
 
 //演算子*をオーバーロード
-Vec2 *operator(const Vec2& left,const Vec2& right) {
+Vec2 operator*(const Vec2& left,const Vec2& right) {
     return Vec2(left.x * right.x, left.y * right.y);
 }
 
@@ -107,6 +108,7 @@ int main() {
     return 0;
     */
 
+    /*
     Vec2 v1(1,1);
     Vec2 v2(2,2);
 
@@ -114,4 +116,19 @@ int main() {
     v3.print();
 
     return 0; 
+    */
+
+    //std::vector
+    std::vector<Vec2> v; //int型のstd::vector
+
+    v.push_back(Vec2(1,1)); //末尾に(1,1)を追加
+    v.push_back(Vec2(2,2)); //末尾に(2,2)を追加
+    v.push_back(Vec2(3,3)); //末尾に(3,3)を追加
+
+    for(int i = 0; i < v.size(); i++){
+        v[i].print();
+    }
+    printf("\n");
+
+    return 0;
 }
