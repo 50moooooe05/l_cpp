@@ -2,6 +2,8 @@
 #include <cmath>
 #include <cstdio>
 #include <vector>
+#include <memory>
+#include <string>
 
 //抽象クラス
 class Figure {
@@ -97,6 +99,17 @@ Vec2 operator*(const Vec2& left,const Vec2& right) {
     return Vec2(left.x * right.x, left.y * right.y);
 }
 
+class  Person{
+   public:
+   int age; 
+   std::string name;
+
+   Person(int _age, const std::string& _name) {
+       age = _age;
+       name = _name;
+   };
+};
+
 int main() {
     /*
     Rectangle rect(1,1,2,2);
@@ -119,6 +132,7 @@ int main() {
     */
 
     //std::vector
+    /*
     std::vector<Vec2> v; //int型のstd::vector
 
     v.push_back(Vec2(1,1)); //末尾に(1,1)を追加
@@ -131,4 +145,16 @@ int main() {
     printf("\n");
 
     return 0;
+    */
+
+    //スマートポインタ
+    std::shared_ptr<Person> p = std::make_shared<Person>(Person(20,"Watson"));
+    printf("%d\n",p->age);
+    return 0;
+
+    /*ターミナルでやるときは
+    clang++ -std=c++11 ray1.cpp
+    C++11で使われ始めたかららしい
+
+    
 }
