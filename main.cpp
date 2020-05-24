@@ -9,12 +9,20 @@ int main(){
     Image img(512,512);
     Camera cam(Vec3(0,0,-3), Vec3(0,0,1));
 
+    Sphere sphere(Vec3(0,0,0),1.0);
+
     for(int  i = 0; i < 512; i++){
         for(int j = 0; j < 512; j++){
             double u = (2.0 * i - img.width) / img.width;
             double v = (2.0 * j - img.height) / img.height;
             Ray ray = cam.getRay(u,v);
-            img.setPixel(i,j,(ray.direction + Vec3(1,1,1))/2.0);
+            
+            Hit hit;
+            if(sphere.intersect(ray,hit)){
+                img.setPixel(i,j,(hit.hitNormal + Vec3(1,1,1))/2.0);
+            }else{
+                img.setPixel(i,j,Vec3(0,0,0));
+            }
         }
     }
     img.ppm_output();
