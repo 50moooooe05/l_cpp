@@ -8,6 +8,10 @@ class Vec3 {
         double y;
         double z;
 
+    Vec3() {
+        x = y = z = 0;
+    };
+
     //コンストラクタ
     Vec3(double _x,double _y,double _z){
         x = _x;

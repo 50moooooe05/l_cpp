@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include "image.h"
 
@@ -13,7 +14,7 @@ int main(){
         for(int j = 0; j < 512; j++){
             int dx = i - cx;
             int dy = j - cy;
-            if(std::pow(dx,2)+std::pow(dy,2) < r*r){
+            if(dx*dx+dy*dy < r*r){
                 img.setPixel(i,j, Vec3(255,255,255));
             }else{
                 img.setPixel(i,j, Vec3(0,0,0));
@@ -21,4 +22,5 @@ int main(){
         }
     }
     img.ppm_output();
+    
 }
