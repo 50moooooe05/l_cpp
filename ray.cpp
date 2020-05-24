@@ -46,7 +46,7 @@ Vec3 operator*(const Vec3& left,const Vec3& right) {
 
 //スカラー倍
 Vec3 operator*(const Vec3& v, double k) {
-    return k*v;
+    return Vec3(k * v.x, k * v.y , k * v.z);
 }
 
 //演算子/をオーバーロード
@@ -62,6 +62,14 @@ double dot(const Vec3& v1, const Vec3& v2){
     return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
 
+class Ray {
+    public:
+        Vec3 origin; //始点
+        Vec3 direction; //方向
+
+    Ray(const Vec3& origin, const Vec3& direction) : origin(origin), direction(direction){};
+};
+
 class Sphere{
     public:
         Vec3 center; //中心座標
@@ -71,33 +79,31 @@ class Sphere{
 
     //Rayとの衝突計算を行うメンバ関数
     bool intersect(const Ray& ray) const {
+        double d_norm = ray.direction.length();
+        double oc_norm = (ray.origin - center).length();
 
+        double a = std::pow(d_norm,2);
+        double b = 2 * dot(ray.direction,ray.origin - center);
+        double c = std::pow(oc_norm,2) - std::pow(radius,2);
+        double D = std::pow(b,2) - 4 * a * c; //判定式
+        if(D < 0) return false; //D<0のとき、実数解は存在しない
+
+        //解の候補
+        double t1 = (-b + std::sqrt(D)) / (2*a);
+        double t2 = (-b - std::sqrt(D)) / (2*a);
+
+        //衝突距離
+        //直線の方向を前側としたときに、直線の始点より後側で衝突した場合もfalse
+        double t = t1;
+        if(t < 0){ 
+            t = t2;
+            if(t < 0) return false;
+        }
+
+        return true;
     };
 };
 
-class Ray {
-    public:
-        Vec3 start; //始点
-        Vec3 direction; //方向
-
-    Ray(const Vec3& start, const Vec3& direction) : start(start), direction(direction){};
-};
-
 int main() {
-    /*
-    std::vector<std::shared_ptr<Shape>> shapes;
-    shapes.push_back(std::make_shared(Sphere(center, radius)));
 
-    for(auto shape : shapes){
-        if(shapes->intersect(ray)){
-            printf("Hit\n");
-        }
-    }
-    */
-
-    Vec3 v1(1,1,sqrt(2));
-    Vec3 v2(2,4,6);
-    double d = dot(v1,v2);
-    double l = v1.length();
-    printf("%f\n",l);
 }
