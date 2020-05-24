@@ -14,7 +14,7 @@ int main(){
             double u = (2.0 * i - img.width) / img.width;
             double v = (2.0 * j - img.height) / img.height;
             Ray ray = cam.getRay(u,v);
-            img.setPixel(i,j,(ray.direction + Vec3(1,1,1)/2.0));
+            img.setPixel(i,j,(ray.direction + Vec3(1,1,1))/2.0);
         }
     }
     img.ppm_output();

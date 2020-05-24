@@ -23,8 +23,8 @@ class Sphere{
         if(D < 0) return false; //D<0のとき、実数解は存在しない
 
         //解の候補
-        double t1 = (-b + std::sqrt(D)) / (2*a);
-        double t2 = (-b - std::sqrt(D)) / (2*a);
+        double t1 = (-b + std::sqrt(D)) / (2 * a);
+        double t2 = (-b - std::sqrt(D)) / (2 * a);
 
         //衝突距離
         //直線の方向を前側としたときに、直線の始点より後側で衝突した場合もfalse

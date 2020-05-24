@@ -11,7 +11,7 @@ class Camera {
 
     Camera(const Vec3& camPos,const Vec3& camForward) : camPos(camPos), camForward(camForward) {
         camRight = -1 * normalize(cross(camForward, Vec3(0,1,0)));
-        camUp = cross(camForward,camRight);
+        camUp = normalize(cross(camForward,camRight));
     };
 
     Ray getRay(double u,double v) const{
