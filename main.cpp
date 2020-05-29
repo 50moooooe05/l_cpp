@@ -18,6 +18,17 @@ double rnd() {
     return dist(mt);
 }
 
+Vec3 randomDir() {
+    double theta = M_PI*rnd();
+    double phi = 2*M_PI*rnd();
+
+    double x = std::cos(phi) * std::sin(theta);
+    double y = std::cos(theta);
+    double z = std::sin(phi) * std::sin(theta);
+
+    return Vec3(x,y,z);
+}
+
 int main(){
     Image img(512,512);
     Camera cam(Vec3(0,0,-3), Vec3(0,0,1));
@@ -25,8 +36,6 @@ int main(){
     Accel accel;
     accel.add(std::make_shared<Sphere>(Sphere(Vec3(0,0,0),1.0)));
     accel.add(std::make_shared<Sphere>(Sphere(Vec3(0,-10001,0),10000)));
-
-    Vec3 lightDir = normalize(Vec3(1,1,-1));
 
     for(int k = 0; k < 100; k++){
         for(int  i = 0; i < img.width; i++){
@@ -38,16 +47,16 @@ int main(){
                 Vec3 color;
                 Hit hit;
                 if(accel.intersect(ray,hit)){
+                    Vec3 lightDir = randomDir();
                     Ray shadowRay = Ray(hit.hitPos+0.001*hit.hitNormal,lightDir);
                     Hit hit_shadow;
                     if(!accel.intersect(shadowRay,hit_shadow)){
-                        double I = std::max(dot(hit.hitNormal,lightDir),0.0);
-                        color = I*Vec3(1,1,1);
+                        color = Vec3(1,1,1);
                     }else{
                         color = Vec3(0,0,0);
                     }
                 }else{
-                    color = Vec3(0,0,0);
+                    color = Vec3(1,1,1);
                 }
 
                 img.setPixel(i,j,img.getPixel(i,j) + 1/100.0 * color); //平均をとる
