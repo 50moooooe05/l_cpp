@@ -31,15 +31,6 @@ Vec3 randomDir() {
 }
 */
 
-//ベクトルnのみから正規直交基底を生成してくれる関数
-void orthonormalBasis(const Vec3& n, Vec3& x, Vec3& z) {
-    if(n.x > 0.9) x = Vec3(0,1,0);
-    else x = Vec3(1,0,0);
-    x = x - dot(x,n)*n;
-    x = normalize(x);
-    z = normalize(cross(n,x));
-}
-
 //ランダムな方向
 Vec3 randomHemisphere(const Vec3& n){
     double u = rnd();
@@ -66,7 +57,7 @@ Vec3 getcolor(const Ray& ray,int depth = 0){
         if(hit.hitSphere->material == 0){
             Ray nextRay(hit.hitPos + 0.001 * hit.hitNormal,randomHemisphere(hit.hitNormal));
             double cos_term = std::max(dot(nextRay.direction,hit.hitNormal),0.0);
-            return cos_term * hit.hitSphere->color * getcolor(nextRay,depth + 1);
+            return 2*M_PI * hit.hitSphere -> color/M_PI * cos_term * getcolor(nextRay,depth + 1);
         }
         //Mirror
         else if(hit.hitSphere->material == 1){
@@ -87,8 +78,9 @@ int main(){
     Image img(512,512);
     Camera cam(Vec3(0,0,-3), Vec3(0,0,1));
 
-    accel.add(std::make_shared<Sphere>(Vec3(0,0,0),1.0,Vec3(0,1,0),0));
-    accel.add(std::make_shared<Sphere>(Vec3(0,-10001,0), 10000, Vec3(1,1,1),0));
+    // accel.add(std::make_shared<Sphere>(Vec3(rnd(),rnd(),rnd()),0.5,Vec3(rnd(),rnd(),rnd()),0));
+    accel.add(std::make_shared<Sphere>(Vec3(rnd(),rnd(),rnd()),rnd(),Vec3(rnd(),rnd(),rnd()),0));
+    accel.add(std::make_shared<Sphere>(Vec3(0,-10001,0), 10000, Vec3(rnd(),rnd(),rnd()),0));
 
 #pragma omp parallel for schedule(dynamic,1)
     for(int k = 0; k < 100; k++){

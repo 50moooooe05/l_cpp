@@ -50,6 +50,10 @@ Vec3 operator*(double k,const Vec3& v) {
     return Vec3(k * v.x, k * v.y , k * v.z);
 }
 
+Vec3 operator*(const Vec3& v,double k) {
+    return k * v;
+}
+
 //演算子/をオーバーロード
 Vec3 operator/(double k,const Vec3& v) {
     return Vec3(k / v.x, k / v.y, k / v.z);
@@ -80,5 +84,13 @@ Vec3 reflect(const Vec3& d, const Vec3& n) {
     return Vec3(d - 2*dot(d,n)*n);
 }
 
+//ベクトルnのみから正規直交基底を生成してくれる関数
+void orthonormalBasis(const Vec3& n, Vec3& x, Vec3& z) {
+    if(n.x > 0.9) x = Vec3(0,1,0);
+    else x = Vec3(1,0,0);
+    x = x - dot(x,n)*n;
+    x = normalize(x);
+    z = normalize(cross(n,x));
+}
 
 #endif
