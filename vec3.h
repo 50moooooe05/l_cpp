@@ -65,7 +65,7 @@ std::ostream& operator<<(std::ostream& stream, const Vec3& v) {
 }
 
 double dot(const Vec3& v1, const Vec3& v2){ 
-    return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
 Vec3 cross(const Vec3& v1, const Vec3& v2) {
@@ -77,7 +77,8 @@ Vec3 normalize(const Vec3& v) {
 }
 
 Vec3 reflect(const Vec3& d, const Vec3& n) {
-    return Vec3(d - 2*dot(d,n)*n);
+    return d - 2*dot(d,n)*n;
 }
+
 
 #endif
