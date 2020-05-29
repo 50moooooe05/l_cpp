@@ -77,7 +77,7 @@ Vec3 normalize(const Vec3& v) {
 }
 
 Vec3 reflect(const Vec3& d, const Vec3& n) {
-    return d - 2*dot(d,n)*n;
+    return Vec3(d - 2*dot(d,n)*n);
 }
 
 
