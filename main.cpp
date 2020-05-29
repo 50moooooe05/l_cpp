@@ -1,10 +1,10 @@
 #include <algorithm>
 #include <iostream>
 #include <cmath>
+#include <omp.h>
 #include <random>
 #include "vec3.h"
 #include "ray.h"
-#include "hit.h"
 #include "image.h"
 #include "sphere.h"
 #include "camera.h"
@@ -33,10 +33,13 @@ int main(){
     Image img(512,512);
     Camera cam(Vec3(0,0,-3), Vec3(0,0,1));
 
-    Accel accel;
-    accel.add(std::make_shared<Sphere>(Sphere(Vec3(0,0,0),1.0)));
-    accel.add(std::make_shared<Sphere>(Sphere(Vec3(0,-10001,0),10000)));
+    Vec3 lightDir = normalize(Vec3(1,1,-1));
 
+    Accel accel;
+    accel.add(std::make_shared<Sphere>(Vec3(0,0,0),1.0,Vec3(1,0,0)));
+    accel.add(std::make_shared<Sphere>(Vec3(0,-10001,0), 10000, Vec3(0.9,0.9,0.9)));
+
+#pragma omp parallel for schedule(dynamic,1)
     for(int k = 0; k < 100; k++){
         for(int  i = 0; i < img.width; i++){
             for(int j = 0; j < img.height; j++){
@@ -47,16 +50,16 @@ int main(){
                 Vec3 color;
                 Hit hit;
                 if(accel.intersect(ray,hit)){
-                    Vec3 lightDir = randomDir();
                     Ray shadowRay = Ray(hit.hitPos+0.001*hit.hitNormal,lightDir);
                     Hit hit_shadow;
-                    if(!accel.intersect(shadowRay,hit_shadow)){
-                        color = Vec3(1,1,1);
-                    }else{
+                    if(accel.intersect(shadowRay,hit_shadow)){
                         color = Vec3(0,0,0);
+                    }else{
+                        double I = std::max(dot(lightDir,hit.hitNormal),0.0);
+                        color = I * hit.hitSphere->color;
                     }
                 }else{
-                    color = Vec3(1,1,1);
+                    color = Vec3(0,0,0);
                 }
 
                 img.setPixel(i,j,img.getPixel(i,j) + 1/100.0 * color); //平均をとる

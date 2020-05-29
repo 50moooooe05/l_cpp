@@ -8,8 +8,10 @@ class Sphere{
     public:
         Vec3 center; //中心座標
         double radius; //半径
+        Vec3 color;
+        int material;
 
-    Sphere(const Vec3& center, double radius): center(center), radius(radius){};
+    Sphere(const Vec3& center, double radius,const Vec3& color,int material): center(center), radius(radius), color(color),material(material){};
 
     //Rayとの衝突計算を行うメンバ関数
     bool intersect(const Ray& ray,Hit& hit) const {
@@ -37,7 +39,7 @@ class Sphere{
         hit.t = t;
         hit.hitPos = ray.origin + t * ray.direction;
         hit.hitNormal = normalize(hit.hitPos - center);
-
+        hit.hitSphere = this;
         return true;
     };
 };
