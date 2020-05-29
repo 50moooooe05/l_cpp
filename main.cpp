@@ -87,6 +87,6 @@ int main(){
             }
         }
     }
+    img.gamma_correction();
     img.ppm_output();
-    
 }

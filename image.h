@@ -22,10 +22,12 @@ class Image {
       delete[] data;
     };
 
+     //(i, j)のRGBを返す
     Vec3 getPixel(int i, int j) const{
         return data[width* i + j];
     };
 
+    //(i, j)にRGBを書き込む
     void setPixel(int i, int j, const Vec3& color){
         data[width * i + j] = color;
     }; 
@@ -46,6 +48,18 @@ class Image {
             }
         }
     };
+
+    void gamma_correction(){
+        for(int i = 0; i < width; i++){
+            for(int j = 0; j < height; j++){
+                Vec3 col = this->getPixel(i,j);
+                col.x = std::pow(col.x,1.0/2.2);
+                col.y = std::pow(col.y,1.0/2.2);
+                col.z = std::pow(col.z,1.0/2.2);
+                this->setPixel(i,j,col);
+            }
+        }
+    }
 };
 
 #endif
