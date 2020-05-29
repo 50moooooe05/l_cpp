@@ -16,6 +16,8 @@ int main(){
     accel.add(std::make_shared<Sphere>(Sphere(Vec3(0,0,0),1.0)));
     accel.add(std::make_shared<Sphere>(Sphere(Vec3(0,-10001,0),10000)));
 
+    Vec3 lightDir = normalize(Vec3(1,1,-1));
+
     for(int  i = 0; i < img.width; i++){
         for(int j = 0; j < img.height; j++){
             double u = (2.0*i - img.width) / img.width;
@@ -24,7 +26,14 @@ int main(){
             
             Hit hit;
             if(accel.intersect(ray,hit)){
-                img.setPixel(i,j,(hit.hitNormal + Vec3(1,1,1))/2.0);
+                Ray shadowRay = Ray(hit.hitPos+0.001*hit.hitNormal,lightDir);
+                Hit hit_shadow;
+                if(!accel.intersect(shadowRay,hit_shadow)){
+                    double I = std::max(dot(hit.hitNormal,lightDir),0.0);
+                img.setPixel(i,j,I*Vec3(1,1,1));
+                }else{
+                    img.setPixel(i,j,Vec3(0,0,0));
+                }
             }else{
                 img.setPixel(i,j,Vec3(0,0,0));
             }
