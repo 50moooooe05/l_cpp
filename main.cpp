@@ -46,24 +46,44 @@ Vec3 randomHemisphere(const Vec3& n){
     return x*xv + y*n + z*zv;
 }
 
+Vec3 randomCosHemisphere(double &pdf,const Vec3& n){
+    double u = rnd();
+    double v = rnd();
+
+    double theta = 0.5*std::acos(1 - 2*u);
+    double phi = 2*M_PI*v;
+    pdf = 1/M_PI * std::cos(theta);
+
+    double x = std::cos(phi)*std::sin(theta);
+    double y = std::cos(theta);
+    double z = std::sin(phi)*std::sin(theta);
+
+    Vec3 xv,zv;
+    orthonormalBasis(n,xv,zv);
+
+    return x*xv + y*n + z*zv;
+}
+
 Accel accel;
 
-Vec3 getcolor(const Ray& ray,int depth = 0){
-    if(depth > 100) return Vec3(0,0,0);
+Vec3 getcolor(const Ray& ray,double roulette = 1.0,int depth = 0){
+    if(rnd() > roulette) return Vec3(0,0,0);
+    roulette *= 0.96;
     
     Hit hit;
     if(accel.intersect(ray,hit)){
         //Diffuse
         if(hit.hitSphere->material == 0){
-            Ray nextRay(hit.hitPos + 0.001 * hit.hitNormal,randomHemisphere(hit.hitNormal));
+            double pdf;
+            Ray nextRay(hit.hitPos + 0.001 * hit.hitNormal,randomCosHemisphere(pdf,hit.hitNormal));
             double cos_term = std::max(dot(nextRay.direction,hit.hitNormal),0.0);
-            return 2*M_PI * hit.hitSphere -> color/M_PI * cos_term * getcolor(nextRay,depth + 1);
+            return 1 / roulette * 1/ pdf * cos_term * hit.hitSphere -> color/M_PI * getcolor(nextRay,roulette,depth + 1);
         }
         //Mirror
         else if(hit.hitSphere->material == 1){
             //反射した先で陰影計算
             Ray nextRay(hit.hitPos + 0.001*hit.hitNormal,reflect(ray.direction,hit.hitNormal));
-            return getcolor(nextRay,depth + 1);
+            return getcolor(nextRay,roulette,depth + 1);
         }
         else{
             return Vec3(0,0,0);
@@ -78,9 +98,8 @@ int main(){
     Image img(512,512);
     Camera cam(Vec3(0,0,-3), Vec3(0,0,1));
 
-    // accel.add(std::make_shared<Sphere>(Vec3(rnd(),rnd(),rnd()),0.5,Vec3(rnd(),rnd(),rnd()),0));
-    accel.add(std::make_shared<Sphere>(Vec3(rnd(),rnd(),rnd()),rnd(),Vec3(rnd(),rnd(),rnd()),0));
-    accel.add(std::make_shared<Sphere>(Vec3(0,-10001,0), 10000, Vec3(rnd(),rnd(),rnd()),0));
+    accel.add(std::make_shared<Sphere>(Vec3(0,0,0),1,Vec3(0,1,0.6),0));
+    accel.add(std::make_shared<Sphere>(Vec3(0,-10001,0), 10000, Vec3(0.5,0.6,0.1),0));
 
 #pragma omp parallel for schedule(dynamic,1)
     for(int k = 0; k < 100; k++){
