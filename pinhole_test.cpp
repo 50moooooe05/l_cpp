@@ -19,7 +19,6 @@ inline double rnd() {
 };
 
 int main() {
-    // const int N = 100;
     Image img(512,512);
     PinholeCamera cam(Vec3(0,0,0),Vec3(0,0,-1),1);
 
@@ -29,11 +28,11 @@ int main() {
 
     Vec3 sunDir = normalize(Vec3(1,1,1));
 
-    // for(int k = 0; k < N; k++){
+    for(int k = 0; k < 100; k++){
         for(int i = 0; i < img.width; i++){
             for(int j = 0; j < img.height; j++){
-                double u = (2.0 * i - img.width) / img.width;
-                double v = (2.0 * j - img.height) / img.height;
+                double u = (2.0 * (i + rnd()) - img.width) / img.width;
+                double v = (2.0 * (j + rnd()) - img.height) / img.height;
 
                 Vec3 col;
                 Ray ray = cam.getRay(u,v);
@@ -44,12 +43,17 @@ int main() {
                     if(!accel.intersect(shadowRay,hit_temp)){
                         col = std::max(dot(hit.hitNormal,sunDir),0.0) * Vec3(1,1,1);
                     }
+                    else{
+                        col = Vec3(0,0,0);
+                    }
                 }
-                img.setPixel(i,j,col);
+                else{
+                    col = Vec3(0,0,0);
+                }
+                img.setPixel(i,j,img.getPixel(i, j) + 1/100.0*col);
             }
         }
-    // }
-    // img.divide(N);
+    }
     img.ppm_output();
 
     return 0;
