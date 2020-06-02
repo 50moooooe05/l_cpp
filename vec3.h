@@ -40,6 +40,10 @@ Vec3 operator-(const Vec3& left,const Vec3& right) {
     return Vec3(left.x - right.x, left.y - right.y,left.z - right.z);
 }
 
+Vec3 operator-( const {
+    return Vec3(-x,-y,-z);
+})
+
 //演算子*をオーバーロード
 Vec3 operator*(const Vec3& left,const Vec3& right) {
     return Vec3(left.x * right.x, left.y * right.y,left.z * right.z);
@@ -61,6 +65,34 @@ Vec3 operator/(double k,const Vec3& v) {
 
 Vec3 operator/(const Vec3& v,double k) {
     return Vec3(v.x / k, v.y /k, v.z / k);
+}
+
+Vec3 operator+=(const Vec3& v) {
+    x += v.x;
+    y += v.y;
+    z += v.z;
+    return *this;
+}
+
+Vec3 operator-=(const Vec3& v) {
+    x -= v.x;
+    y -= v.y;
+    z -= v.z;
+    return *this;
+}
+
+Vec3 operator*=(const Vec3& v) {
+    x *= v.x;
+    y *= v.y;
+    z *= v.z;
+    return *this;
+}
+
+Vec3 operator/=(const Vec3& v) {
+    x /= v.x;
+    y /= v.y;
+    z /= v.z;
+    return *this;
 }
 
 std::ostream& operator<<(std::ostream& stream, const Vec3& v) {

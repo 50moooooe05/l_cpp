@@ -10,14 +10,6 @@
 #include "sphere.h"
 #include "accel.h"
 
-std::random_device dev_rnd;
-std::mt19937 mt(dev_rnd()); //std::mt19937...メルセンヌ・ツイスタによる擬似乱数生成器
-std::uniform_real_distribution<> dist(0,1);
-//0から1までの一様分布に従う乱数が得られる
-inline double rnd() {
-    return dist(mt);
-};
-
 int main() {
     Image img(512,512);
     PinholeCamera cam(Vec3(0,0,0),Vec3(0,0,-1),1);
