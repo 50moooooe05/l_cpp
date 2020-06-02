@@ -8,10 +8,11 @@ class Sphere{
     public:
         Vec3 center; //中心座標
         double radius; //半径
-        Vec3 color;
-        int material;
+        // Vec3 color;
+        // int material;
 
-    Sphere(const Vec3& center, double radius,const Vec3& color,int material): center(center), radius(radius), color(color),material(material){};
+    // Sphere(const Vec3& center, double radius,const Vec3& color,int material): center(center), radius(radius), color(color),material(material){};
+    Sphere(const Vec3& center, double radius): center(center), radius(radius){};
 
     //Rayとの衝突計算を行うメンバ関数
     bool intersect(const Ray& ray,Hit& hit) const {

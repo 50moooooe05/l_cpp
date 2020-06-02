@@ -32,8 +32,16 @@ class Image {
         data[width * i + j] = color;
     }; 
 
+    void divide(double k){
+        for(int i = 0; i < width; i++){
+            for(int j = 0; j < height; j++){
+                this->setPixel(i,j,this->getPixel(i,j)/k);
+            }
+        }
+    };
+
     void ppm_output() const {
-        std::ofstream file("output.ppm");
+        std::ofstream file("pinhole_test.ppm");
         file << "P3" << std::endl;
         file << width << " " << height << std::endl;
         file << "255" << std::endl;
